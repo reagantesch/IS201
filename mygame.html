@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disney Riddle Game</title>
+    <style>
+        /* Main Background - Disney Theme */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/1349/464/75/dam/disneyland/attractions/disneyland/sleeping-beauty-castle-walkthrough/sleeping-beauty-castle-exterior-16x9.jpg?1731716456269'); /* Replace with Disney-related background */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Navigation Bar Styles */
+        .rnav {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .rnav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .rnav a {
+            text-decoration: none;
+            color: #ffeb3b;
+            font-size: 18px;
+            margin: 0 10px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            transition: color 0.3s ease;
+        }
+
+        .rnav a:hover {
+            color: #ff7043;
+        }
+
+        /* Game Container Styles */
+        .game-container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 400px;
+            transition: background-color 0.3s ease;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #ffeb3b;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        .game-button {
+            padding: 15px 30px;
+            background-color: #ff7043;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .game-button:hover {
+            background-color: #d84315;
+        }
+
+        /* Game Area (when a game is selected) */
+        #game-area {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            width: 400px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .riddle {
+            font-size: 25px;
+            margin-bottom: 20px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        input {
+            padding: 12px;
+            width: 80%;
+            font-size: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border: 2px solid #ffeb3b;
+            background-color: #f9fbe7;
+            color: #333;
+        }
+
+        input:focus {
+            background-color: #fffde7;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .next-button {
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        .next-button:hover {
+            background-color: #004d40;
+        }
+
+        /* Fun theme styling */
+        #disney-theme {
+            background-image: url('https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/1349/464/75/dam/disneyland/attractions/disneyland/sleeping-beauty-castle-walkthrough/sleeping-beauty-castle-exterior-16x9.jpg?1731716456269'); /* Replace with Disney background */
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            color: #ff6f00;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="rnav">
+        <ul>
+            <li><a href="index.html">Home</a> |</li>
+            <li><a href="resume.html">Resume</a> |</li>
+            <li><a href="traveling.html">Traveling</a> |</li>
+            <li><a href="mygame.html">Game</a></li>
+        </ul>
+    </div>
+
+    <!-- Game Container -->
+    <div class="game-container">
+        <h1>Welcome to the Disney Riddle Game!</h1>
+        <button class="game-button" onclick="startGame()">Start the Disney Fun!</button>
+    </div>
+
+    <!-- Game Area (after the Disney game is selected) -->
+    <div id="game-area">
+        <h1>Disney Riddle Adventure</h1>
+        <div id="riddle" class="riddle"></div>
+        <input type="text" id="userAnswer" placeholder="Your answer here">
+        <button class="next-button" onclick="checkAnswer()">Submit Answer</button>
+        <div id="result" class="result"></div>
+        <button class="next-button" onclick="nextRiddle()">Next Riddle</button>
+    </div>
+
+    <script>
+        // Disney-themed riddles
+        const disneyRiddles = [
+            { question: "Which Disney character is known for losing a glass slipper?", answer: "Cinderella" },
+            { question: "What is the name of the toy cowboy in Toy Story?", answer: "Woody" },
+            { question: "Who is Simba’s father in The Lion King?", answer: "Mufasa" },
+            { question: "What animal is the main character of Zootopia?", answer: "Rabbit" },
+            { question: "Which Disney princess has a pet tiger named Rajah?", answer: "Jasmine" }
+        ];
+
+        let currentRiddleIndex = 0;
+        let currentRiddles = disneyRiddles;
+
+        function startGame() {
+            document.querySelector('.game-container').style.display = 'none';
+            document.getElementById('game-area').style.display = 'block';
+            displayRiddle();
+        }
+
+        function displayRiddle() {
+            document.getElementById('riddle').textContent = currentRiddles[currentRiddleIndex].question;
+            document.getElementById('result').textContent = '';
+            document.getElementById('userAnswer').value = '';
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById('userAnswer').value.trim().toLowerCase();
+            const correctAnswer = currentRiddles[currentRiddleIndex].answer.toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                document.getElementById('result').textContent = "Correct! You are a Disney expert!";
+                document.getElementById('result').style.color = "#4CAF50";
+            } else {
+                document.getElementById('result').textContent = "Oops! That's not correct. Try again!";
+                document.getElementById('result').style.color = "#f44336";
+            }
+        }
+
+        function nextRiddle() {
+            currentRiddleIndex = (currentRiddleIndex + 1) % currentRiddles.length;
+            displayRiddle();
+        }
+    </script>
+
+</body>
+</html>
